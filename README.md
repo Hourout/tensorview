@@ -1,15 +1,15 @@
-# tensorview
-Dynamic visualization training service in Jupyter Notebook for Keras tf.keras and others.
+# TensorView
+Dynamic visualization training service in Jupyter Notebook for Keras, tf.keras and others.
 
 
-![PyPI version](https://img.shields.io/pypi/pyversions/beefly.svg)
-![Github license](https://img.shields.io/github/license/Hourout/beefly.svg)
-[![PyPI](https://img.shields.io/pypi/v/beefly.svg)](https://pypi.python.org/pypi/beefly)
-![PyPI format](https://img.shields.io/pypi/format/beefly.svg)
+![PyPI version](https://img.shields.io/pypi/pyversions/tensorview.svg)
+![Github license](https://img.shields.io/github/license/Hourout/tensorview.svg)
+[![PyPI](https://img.shields.io/pypi/v/tensorview.svg)](https://pypi.python.org/pypi/tensorview)
+![PyPI format](https://img.shields.io/pypi/format/tensorview.svg)
 
-Beefly is efficient visualization training packages of Keras, enabling the live visualization of loss function and metrics during training process.
+Tensorview is efficient visualization training packages of Keras, enabling the live visualization of loss function and metrics during training process.
 
-Beefly is process in the Jupyter Notebook, so we recommend Jupyter Notebook as Beefly's developing environment.
+Tensorview is process in the Jupyter Notebook, so we recommend Jupyter Notebook as Tensorview's developing environment.
 
 ![](https://github.com/Hourout/beefly/blob/master/image/plot_metrics000.gif)
 
@@ -20,13 +20,13 @@ Beefly is process in the Jupyter Notebook, so we recommend Jupyter Notebook as B
 To install [this verson from PyPI](https://pypi.org/project/beefly/), type:
 
 ```
-pip install beefly
+pip install tensorview
 ```
 
 To get the newest one from this repo (note that we are in the alpha stage, so there may be frequent updates), type:
 
 ```
-pip install git+git://github.com/Hourout/beefly.git
+pip install git+git://github.com/Hourout/tensorview.git
 ```
 
 ## Feature
@@ -55,6 +55,6 @@ pip install git+git://github.com/Hourout/beefly.git
 
 
 ## Example
-- [beefly.plot_metrics()](https://github.com/Hourout/beefly/blob/master/example/plot_metrics.ipynb)
-- [beefly.PlotMetricsOnBatch()](https://github.com/Hourout/beefly/blob/master/example/PlotMetricsOnBatch.ipynb)
-- [beefly.PlotMetricsOnEpoch()](https://github.com/Hourout/beefly/blob/master/example/PlotMetricsOnEpoch.ipynb)
+- [tensorview.plot_metrics()](https://github.com/Hourout/beefly/blob/master/example/plot_metrics.ipynb)
+- [tensorview.PlotMetricsOnBatch()](https://github.com/Hourout/beefly/blob/master/example/PlotMetricsOnBatch.ipynb)
+- [tensorview.PlotMetricsOnEpoch()](https://github.com/Hourout/beefly/blob/master/example/PlotMetricsOnEpoch.ipynb)
