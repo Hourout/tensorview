@@ -1,10 +1,28 @@
 from collections import defaultdict
 
-import imageio
-from tensorflow.io import gfile
+from tensorflow.io.gfile import exists
 import matplotlib.pyplot as plt
 from IPython.display import clear_output
+from pyecharts.charts import Line
+from pyecharts.charts import Page
+from pyecharts.charts import Timeline
+from pyecharts import options as opts
+from pandas import Series
 
+
+class params(object):
+    columns = None
+    iter_num = None
+    mode = None
+    wait_num = None
+    figsize = None
+    cell_size = None
+    valid_fmt = None
+    logs = None
+    xlabel = None
+    polt_num = None
+    frames = None
+    metrics = None
 
 class plot_metrics():
     """
@@ -26,62 +44,100 @@ class plot_metrics():
     """
     def __init__(self, columns=2, iter_num=None, mode=1, wait_num=1, figsize=None,
                  cell_size=(6, 4), valid_fmt="val_{}"):
-        self.columns = columns
-        self.iter_num = iter_num
-        self.mode = mode
-        self.wait_num = wait_num
-        self.figsize = figsize
-        self.cell_size = cell_size
-        self.valid_fmt = valid_fmt
-        self.logs = defaultdict(list)
-        self.xlabel = {0:'epoch', 1:'batch'}
-        self.polt_num = 0
+        self.params = params
+        self.params.columns = columns
+        self.params.iter_num = iter_num
+        self.params.mode = mode
+        self.params.wait_num = wait_num
+        self.params.figsize = figsize
+        self.params.cell_size = cell_size
+        self.params.valid_fmt = valid_fmt
+        self.params.logs = defaultdict(list)
+        self.params.xlabel = {0:'epoch', 1:'batch'}
+        self.params.polt_num = 0
+        self.params.frames = []
 
     def update(self, log):
         """
         Arguments:
         log : dict, name and value of loss or metrics;
         """
-        self.metrics = list(filter(lambda x: self.valid_fmt.split('_')[0] not in x.lower(), log))
-        if self.figsize is None:
-            self.figsize = (self.columns*self.cell_size[0], ((len(self.metrics)+1)//self.columns+1)*self.cell_size[1])
+        self.params.metrics = list(filter(lambda x: self.params.valid_fmt.split('_')[0] not in x.lower(), log))
+        if self.params.figsize is None:
+            self.params.figsize = (self.params.columns*self.params.cell_size[0],
+                                   ((len(self.params.metrics)+1)//self.params.columns+1)*self.params.cell_size[1])
         for metric in log:
-            self.logs[metric] += [log[metric]]
-        self.polt_num += 1
+            self.params.logs[metric] += [log[metric]]
+        self.params.polt_num += 1
 
-    def draw(self, save_image=False, save_image_path=None, save_gif=False, save_gif_path=None):
+    def draw(self):
         """
         Arguments:
-        save_image : bool, default False, if save_image=True, train end save last image;
         save_image_path : str, if save_image=True, train end save last image to path;
         save_gif : bool, default False, if save_gif=True, train end save all image to gif;
         save_gif_path : str, if save_gif=True, train end save gif to path;
         """
-        if self.polt_num%self.wait_num==0:
+        if self.params.polt_num%self.params.wait_num==0:
             clear_output(wait=True)
-            figure = plt.figure(figsize=self.figsize)
-            for metric_id, metric in enumerate(self.metrics):
-                plt.subplot((len(self.metrics)+1)//self.columns+1, self.columns, metric_id+1)
-                if self.iter_num is not None:
-                    plt.xlim(1, self.iter_num)
-                plt.plot(range(1, len(self.logs[metric])+1), self.logs[metric], label="train")
-                if self.valid_fmt.format(metric) in self.logs:
-                    plt.plot(range(1, len(self.logs[metric])+1), self.logs[self.valid_fmt.format(metric)], label=self.valid_fmt.split('_')[0])
+            figure = plt.figure(figsize=self.params.figsize)
+            for metric_id, metric in enumerate(self.params.metrics):
+                plt.subplot((len(self.params.metrics)+1)//self.params.columns+1, self.params.columns, metric_id+1)
+                if self.params.iter_num is not None:
+                    plt.xlim(1, self.params.iter_num)
+                plt.plot(range(1, len(self.params.logs[metric])+1), self.params.logs[metric], label="train")
+                if self.params.valid_fmt.format(metric) in self.params.logs:
+                    plt.plot(range(1, len(self.params.logs[metric])+1),
+                             self.params.logs[self.params.valid_fmt.format(metric)],
+                             label=self.params.valid_fmt.split('_')[0])
                 plt.title(metric)
-                plt.xlabel(self.xlabel[self.mode])
+                plt.xlabel(self.params.xlabel[self.params.mode])
                 plt.legend(loc='center right')
             plt.tight_layout()
-            if save_image:
-                if save_image_path is not None:
-                    plt.savefig(save_image_path, bbox_inches='tight')
-            if save_gif_path is not None:
-                if not gfile.exists('./gif_temp_dirs'): gfile.makedirs('./gif_temp_dirs')
-                plt.savefig('./gif_temp_dirs/'+str(self.polt_num)+'.png', bbox_inches='tight')
-                if save_gif:
-                    frames = []
-                    image_path_list = sorted(gfile.glob('./gif_temp_dirs/*.png'), key=lambda i:int(i[16:-4]))
-                    for image_path in image_path_list:
-                        frames.append(imageio.imread(image_path))
-                    imageio.mimsave(save_gif_path, frames, 'GIF', duration=1)
-                    gfile.rmtree('./gif_temp_dirs')
             plt.show()
+    
+    def visual(self, name='model_visual', path=None, gif=False):
+        if path is not None:
+            assert exists(path), "`path` not exist."
+            file = path+'/'+'{}.html'.format(name)
+        else:
+            file = '{}.html'.format(name)
+        page = Page(interval=1, layout=pe.charts.Page.SimplePageLayout)
+        plot_list = []
+        width_len = '750px'
+        height_len = '450px'
+        for metric_id, metric in enumerate(self.params.metrics):
+            if not gif:
+                line = Line(opts.InitOpts(width=width_len, height=height_len))
+                line = line.add_xaxis(list(range(1, self.params.polt_num+1)))
+                line = line.add_yaxis('train', Series(self.params.logs[metric]).round(4).tolist(), is_smooth=True)
+                if self.params.valid_fmt.format(metric) in self.params.logs:
+                    line = line.add_yaxis(self.params.valid_fmt.split('_')[0],
+                                          Series(self.params.logs[self.params.valid_fmt.format(metric)]).round(4).tolist(), is_smooth=True)
+                line = line.set_series_opts(label_opts=opts.LabelOpts(is_show=False),
+                                            markpoint_opts=opts.MarkPointOpts(data=[opts.MarkPointItem(type_='max', name='最大值'),
+                                                                                    opts.MarkPointItem(type_='min', name='最小值')]))
+                line = line.set_global_opts(title_opts=opts.TitleOpts(title=metric),
+                                            xaxis_opts=opts.AxisOpts(name=self.params.xlabel[self.params.mode],
+                                                                     name_location='center', is_scale=True),
+                                            datazoom_opts=[opts.DataZoomOpts(range_start=0, range_end=100)],
+                                            toolbox_opts=opts.ToolboxOpts())
+                plot_list.append(line)
+            else:
+                timeline = Timeline(opts.InitOpts(width=width_len, height=height_len)).add_schema(play_interval=100, is_auto_play=True)
+                for i in range(1, self.params.polt_num+1):
+                    line = Line(opts.InitOpts(width=width_len, height=height_len))
+                    line = line.add_xaxis(list(range(1, i+1)))
+                    line = line.add_yaxis('train', Series(self.params.logs[metric])[:i].round(4).tolist(), is_smooth=True)
+                    if self.params.valid_fmt.format(metric) in self.params.logs:
+                        line = line.add_yaxis(self.params.valid_fmt.split('_')[0],
+                                              Series(self.params.logs[self.params.valid_fmt.format(metric)])[:i].round(4).tolist(), is_smooth=True)
+                    line = line.set_series_opts(label_opts=opts.LabelOpts(is_show=False),
+                                            markpoint_opts=opts.MarkPointOpts(data=[opts.MarkPointItem(type_='max', name='最大值'),
+                                                                                    opts.MarkPointItem(type_='min', name='最小值')]))
+                    line = line.set_global_opts(title_opts=opts.TitleOpts(title=metric),
+                                            xaxis_opts=opts.AxisOpts(name=self.params.xlabel[self.params.mode],
+                                                                     name_location='center', is_scale=True))
+                    timeline.add(line, str(i))
+                plot_list.append(timeline)
+        page.add(*plot_list).render(file)
+        return file
