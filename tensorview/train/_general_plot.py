@@ -101,7 +101,7 @@ class plot_metrics():
             file = path+'/'+'{}.html'.format(name)
         else:
             file = '{}.html'.format(name)
-        page = Page(interval=1, layout=pe.charts.Page.SimplePageLayout)
+        page = Page(interval=1, layout=Page.SimplePageLayout)
         plot_list = []
         width_len = '750px'
         height_len = '450px'
