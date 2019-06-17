@@ -1,5 +1,5 @@
-from tensorview.train._general_plot import plot_metrics
-from tensorview.train._keras_callbacks_PlotMetricsOnBatch import PlotMetricsOnBatch
-from tensorview.train._keras_callbacks_PlotMetricsOnEpoch import PlotMetricsOnEpoch
+from tensorview.train._general_plot import *
+from tensorview.train._keras_callbacks_PlotMetricsOnBatch import *
+from tensorview.train._keras_callbacks_PlotMetricsOnEpoch import *
 
 __beefly_version__ = '0.8.0'
