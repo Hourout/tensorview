@@ -9,6 +9,7 @@ from pyecharts.charts import Timeline
 from pyecharts import options as opts
 from pandas import Series
 
+__all__ = ['PlotMetrics']
 
 class params(object):
     columns = None
@@ -24,7 +25,7 @@ class params(object):
     frames = None
     metrics = None
 
-class plot_metrics():
+class PlotMetrics():
     """
     Arguments:
         columns : int, default 2, The number of sub graphs that the width of metrics
