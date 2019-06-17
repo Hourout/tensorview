@@ -1,6 +1,7 @@
 from tensorview import train
+from tensorview import model
 
-__version__ = '0.1.0'
+__version__ = '0.2.0'
 __author__ = 'JinQing Lee'
 
 
