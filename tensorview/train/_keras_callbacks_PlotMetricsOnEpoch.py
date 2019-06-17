@@ -10,6 +10,7 @@ from pyecharts.charts import Timeline
 from pyecharts import options as opts
 from pandas import Series
 
+__all__ = ['PlotMetricsOnEpoch']
 
 class PlotMetricsOnEpoch(Callback):
     """
