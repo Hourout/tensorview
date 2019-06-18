@@ -26,6 +26,11 @@ class PlotMetricsOnEpoch(Callback):
         cell_size : tuple, default (6, 4), Indicates the customize image size, which is used when figsize=None;
         valid_fmt : str, default "val_{}", The string preceding the underscore is used to
                    implement the validation set indicator naming;
+        visual_name : str, default 'model_visual', save plot image with html file name.
+        visual_name_gif : str, default 'model_visual_gif', save plot gif with html file name.
+        visual_path : str, default None, train end save last image or gif file with html format to path;
+        visual_image : bool, default True, if visual_image=False, train end not save image.
+        visual_gif : bool, default False, if save_gif=True, train end save all image to gif;
     """
     def __init__(self, metrics_name, columns=2, iter_num=None, wait_num=1, figsize=None,
                  cell_size=(6, 4), valid_fmt="val_{}", visual_name='model_visual', visual_name_gif='model_visual_gif',
@@ -91,6 +96,15 @@ class PlotMetricsOnEpoch(Callback):
             plt.show()
     
     def visual(self, name='model_visual', path=None, gif=False):
+        """
+        Arguments:
+        name : str, train end save last image or gif file with html format name.
+        path : str, train end save last image or gif file with html format to path;
+        save_gif : bool, default False, if save_gif=True, train end save all image to gif;
+        
+        Return:
+            a html file path.
+        """
         if path is not None:
             assert exists(path), "`path` not exist."
             file = path+'/'+'{}.html'.format(name)
@@ -126,10 +140,10 @@ class PlotMetricsOnEpoch(Callback):
                         line = line.add_yaxis(self.valid_fmt.split('_')[0],
                                               Series(self.epoch_logs[self.valid_fmt.format(metric)])[:i].round(4).tolist(), is_smooth=True)
                     line = line.set_series_opts(label_opts=opts.LabelOpts(is_show=False),
-                                            markpoint_opts=opts.MarkPointOpts(data=[opts.MarkPointItem(type_='max', name='max_value'),
-                                                                                    opts.MarkPointItem(type_='min', name='min_value')]))
+                                                markpoint_opts=opts.MarkPointOpts(data=[opts.MarkPointItem(type_='max', name='max_value'),
+                                                                                        opts.MarkPointItem(type_='min', name='min_value')]))
                     line = line.set_global_opts(title_opts=opts.TitleOpts(title=metric),
-                                            xaxis_opts=opts.AxisOpts(name='Epoch', name_location='center', is_scale=True))
+                                                xaxis_opts=opts.AxisOpts(name='Epoch', name_location='center', is_scale=True))
                     timeline.add(line, str(i))
                 plot_list.append(timeline)
         page.add(*plot_list).render(file)
