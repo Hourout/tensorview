@@ -101,7 +101,7 @@ class PlotMetrics():
         save_gif : bool, default False, if save_gif=True, train end save all image to gif;
         
         Return:
-            a html file.
+            a html file path.
         """
         if path is not None:
             assert exists(path), "`path` not exist."
