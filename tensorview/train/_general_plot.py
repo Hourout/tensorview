@@ -73,10 +73,7 @@ class PlotMetrics():
 
     def draw(self):
         """
-        Arguments:
-        save_image_path : str, if save_image=True, train end save last image to path;
-        save_gif : bool, default False, if save_gif=True, train end save all image to gif;
-        save_gif_path : str, if save_gif=True, train end save gif to path;
+        Plot metrics.
         """
         if self.params.polt_num%self.params.wait_num==0:
             clear_output(wait=True)
@@ -97,6 +94,15 @@ class PlotMetrics():
             plt.show()
     
     def visual(self, name='model_visual', path=None, gif=False):
+        """
+        Arguments:
+        name : str, train end save last image or gif file with html format name.
+        path : str, train end save last image or gif file with html format to path;
+        save_gif : bool, default False, if save_gif=True, train end save all image to gif;
+        
+        Return:
+            a html file.
+        """
         if path is not None:
             assert exists(path), "`path` not exist."
             file = path+'/'+'{}.html'.format(name)
