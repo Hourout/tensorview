@@ -121,8 +121,8 @@ class PlotMetrics():
                     line = line.add_yaxis(self.params.valid_fmt.split('_')[0],
                                           Series(self.params.logs[self.params.valid_fmt.format(metric)]).round(4).tolist(), is_smooth=True)
                 line = line.set_series_opts(label_opts=opts.LabelOpts(is_show=False),
-                                            markpoint_opts=opts.MarkPointOpts(data=[opts.MarkPointItem(type_='max', name='最大值'),
-                                                                                    opts.MarkPointItem(type_='min', name='最小值')]))
+                                            markpoint_opts=opts.MarkPointOpts(data=[opts.MarkPointItem(type_='max', name='max_value'),
+                                                                                    opts.MarkPointItem(type_='min', name='min_value')]))
                 line = line.set_global_opts(title_opts=opts.TitleOpts(title=metric),
                                             xaxis_opts=opts.AxisOpts(name=self.params.xlabel[self.params.mode],
                                                                      name_location='center', is_scale=True),
