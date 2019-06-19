@@ -13,7 +13,7 @@ Tensorview is process in the Jupyter Notebook, so we recommend Jupyter Notebook 
 
 ![](https://github.com/Hourout/beefly/blob/master/image/plot_metrics000.gif)
 
-| [API Document](https://github.com/Hourout/beefly/blob/master/document/English_API.md) | [API文档](https://github.com/Hourout/beefly/blob/master/document/Chinese_API.md) | [中文介绍](https://github.com/Hourout/beefly/blob/master/document/Chinese.md) |
+| [API Document](https://github.com/Hourout/tensorview/blob/master/document/English_API.md) | [API文档](https://github.com/Hourout/tensorview/blob/master/document/Chinese_API.md) | [中文介绍](https://github.com/Hourout/tensorview/blob/master/document/Chinese.md) |
 
 ## Installation
 
@@ -55,6 +55,9 @@ pip install git+git://github.com/Hourout/tensorview.git
 
 
 ## Example
-- [tensorview.plot_metrics()](https://github.com/Hourout/beefly/blob/master/example/plot_metrics.ipynb)
-- [tensorview.PlotMetricsOnBatch()](https://github.com/Hourout/beefly/blob/master/example/PlotMetricsOnBatch.ipynb)
-- [tensorview.PlotMetricsOnEpoch()](https://github.com/Hourout/beefly/blob/master/example/PlotMetricsOnEpoch.ipynb)
+
+[more example](https://github.com/Hourout/tensorview/blob/master/example/readme.md)
+
+- [tensorview.train.PlotMetrics()](https://github.com/Hourout/tensorview/blob/master/example/PlotMetrics.ipynb)
+- [tensorview.train.PlotMetricsOnBatch()](https://github.com/Hourout/tensorview/blob/master/example/PlotMetricsOnBatch.ipynb)
+- [tensorview.train.PlotMetricsOnEpoch()](https://github.com/Hourout/tensorview/blob/master/example/PlotMetricsOnEpoch.ipynb)
