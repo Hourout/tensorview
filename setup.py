@@ -6,13 +6,14 @@ def readme():
         return f.read()
 
 setup(name='tensorview',
-      version='0.2.0',
-      install_requires=['matplotlib', 'tensorflow>=2.0.0b0'],
+      version='0.3.0',
+      install_requires=['matplotlib', 'pandas>=0.24.1', 'pyecharts>=1.2.0',
+                        'pyecharts_snapshot>=0.1.10' 'tensorflow>=2.0.0b1'],
       description='Dynamic visualization training service in Jupyter Notebook for Keras tf.keras and others.',
       long_description=readme(),
       long_description_content_type='text/markdown',
       url='https://github.com/Hourout/tensorview',
-      author='JinQing Lee, Gaojie Wei',
+      author='JinQing Lee',
       author_email='hourout@163.com',
       keywords=['keras-visualization', 'tensorflow-visualization', 'keras', 'tensorflow', 'tf.keras', 'plot', 'chart'],
       license='Apache License Version 2.0',
