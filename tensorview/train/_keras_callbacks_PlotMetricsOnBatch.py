@@ -56,6 +56,11 @@ class PlotMetricsOnBatch(Callback):
         self.visual_path = visual_path
         self.visual_image = visual_image
         self.visual_gif = visual_gif
+        if self.figsize is None:
+            self.figsize = (self.columns*self.cell_size[0], ((len(self.metrics)+1)//self.columns+1)*self.cell_size[1])
+        if self.eval_batch_num is not None:
+            self.new_val_name = [self.valid_fmt.split('_')[0]+'_'+i for i in self.metrics_name]
+#             self.metrics = self.new_val_name+self.metrics_name
 
     def on_batch_end(self, batch, logs=None):
         self.batch_num += 1
@@ -64,14 +69,17 @@ class PlotMetricsOnBatch(Callback):
         for old_name, new_name in zip(self.model.metrics_names, self.metrics_name):
             logs[new_name] = logs.pop(old_name)
         if self.eval_batch_num is not None:
-            self.new_val_name = [self.valid_fmt.split('_')[0]+'_'+i for i in self.metrics_name]
-            self.metrics = self.new_val_name+self.metrics_name
+#             self.new_val_name = [self.valid_fmt.split('_')[0]+'_'+i for i in self.metrics_name]
+#             self.metrics = self.new_val_name+self.metrics_name
             if self.batch_num%self.eval_batch_num==0:
                 loss_list = self.model.evaluate(x=self.valid_x, y=self.valid_y, batch_size=self.valid_batch_size, verbose=0, sample_weight=self.valid_sample_weight, steps=self.valid_steps)
                 for loss_value, new_name in zip(loss_list, self.new_val_name):
                     logs[new_name] = loss_value
-        if self.figsize is None:
-            self.figsize = (self.columns*self.cell_size[0], ((len(self.metrics)+1)//self.columns+1)*self.cell_size[1])
+            else:
+                for new_name in self.new_val_name:
+                    logs[new_name] = None
+#         if self.figsize is None:
+#             self.figsize = (self.columns*self.cell_size[0], ((len(self.metrics)+1)//self.columns+1)*self.cell_size[1])
         for metric in logs:
             self.batch_logs[metric] += [logs[metric]]
         self.draw(metrics=self.metrics, logs=self.batch_logs, batch=self.batch_num, columns=self.columns,
@@ -88,7 +96,7 @@ class PlotMetricsOnBatch(Callback):
                   figsize=self.figsize, cell_size=self.cell_size, valid_fmt=self.valid_fmt)
     
     def draw(self, metrics, logs, batch, columns, iter_num, wait_num, eval_batch_num, figsize, cell_size, valid_fmt):
-        logit = batch%wait_num==0 if eval_batch_num is None else (batch%wait_num==0)|(batch%eval_batch_num==0)
+        logit = batch%wait_num==0 #if eval_batch_num is None else (batch%wait_num==0)|(batch%eval_batch_num==0)
         if logit:
             clear_output(wait=True)
             plt.figure(figsize=figsize)
@@ -96,11 +104,16 @@ class PlotMetricsOnBatch(Callback):
                 plt.subplot((len(metrics)+1)//columns+1, columns, metric_id+1)
                 if iter_num is not None:
                     plt.xlim(1, iter_num)
-                if valid_fmt.split('_')[0] not in metric:
-                    plt.plot(range(1, len(logs[metric])+1), logs[metric], label="train")
-                else:
-                    plt.plot(range(eval_batch_num, len(logs[metric])*eval_batch_num+1, eval_batch_num),
-                             logs[metric], label=valid_fmt.split('_')[0])
+                plt.plot(range(1, len(logs[metric])+1), logs[metric], label="train")
+                if valid_fmt.format(metric) in logs:
+                    plt.plot(range(1, len(logs[metric])+1), logs[valid_fmt.format(metric)], label=valid_fmt.split('_')[0])
+                
+                
+#                 if valid_fmt.split('_')[0] not in metric:
+#                     plt.plot(range(1, len(logs[metric])+1), logs[metric], label="train")
+#                 else:
+#                     plt.plot(range(eval_batch_num, len(logs[metric])*eval_batch_num+1, eval_batch_num),
+#                              logs[metric], label=valid_fmt.split('_')[0])
                 plt.title(metric)
                 plt.xlabel('batch')
                 plt.legend(loc='center right')
@@ -108,6 +121,15 @@ class PlotMetricsOnBatch(Callback):
             plt.show()
     
     def visual(self, name='model_visual', path=None, gif=False):
+        """
+        Arguments:
+        name : str, train end save last image or gif file with html format name.
+        path : str, train end save last image or gif file with html format to path;
+        save_gif : bool, default False, if save_gif=True, train end save all image to gif;
+        
+        Return:
+            a html file path.
+        """
         if path is not None:
             assert exists(path), "`path` not exist."
             file = path+'/'+'{}.html'.format(name)
