@@ -59,6 +59,6 @@ pip install git+git://github.com/Hourout/tensorview.git
 
 [more example](https://github.com/Hourout/tensorview/blob/master/example/readme.md)
 
-- [tensorview.train.PlotMetrics()](https://github.com/Hourout/tensorview/blob/master/example/PlotMetrics.ipynb)
+- [tensorview.train.PlotMetrics()](https://github.com/Hourout/tensorview/blob/master/example/tv.train.plot_metrics.ipynb)
 - [tensorview.train.PlotMetricsOnBatch()](https://github.com/Hourout/tensorview/blob/master/example/PlotMetricsOnBatch.ipynb)
 - [tensorview.train.PlotMetricsOnEpoch()](https://github.com/Hourout/tensorview/blob/master/example/PlotMetricsOnEpoch.ipynb)
