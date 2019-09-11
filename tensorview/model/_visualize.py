@@ -1,8 +1,11 @@
-from pyecharts.charts import Page, Scatter
+from pyecharts.charts import Page, Scatter, Tab
+from pyecharts.components import Image
 from pyecharts import options as opts
+import tensorflow as tf
+from linora.image import ImageAug
 
 
-__all__ = ['weights_visualize']
+__all__ = ['weights_visualize', 'layer_visualize']
 
 def scatter_base(value, label, title, subtitle):
     c = (Scatter()
@@ -23,3 +26,48 @@ def weights_visualize(model, layer_name):
                 charts.append(scatter_base(weights, label, title, subtitle))
     page = Page().add(*charts)
     return page.render()
+
+def image_base(img_src, title, subtitle):
+    image = (Image()
+             .add(src=img_src)
+             .set_global_opts(title_opts=opts.ComponentTitleOpts(title=title, subtitle=subtitle)))
+    return image
+
+def layer_visualize(model, image, layer_name, layer_max_image=32, jupyter=True, path='feature_visualize.html'):
+    if tf.io.gfile.exists('feature_map'):
+        tf.io.gfile.rmtree('feature_map')
+    tf.io.gfile.makedirs('feature_map')
+    temp_model = tf.keras.backend.function(model.inputs, [i.output for i in model.layers if i.name in layer_name])
+    temp_name = [i.name for i in model.layers if i.name in layer_name]
+    result = temp_model(image)
+    images_per_row = 16
+    count = 0
+    name_dict = {}
+    tab = Tab()
+    for feature, name in zip(result, temp_name):
+        if feature.ndim==4:
+            if feature.shape[-1]==3:
+                display_grid = feature[0,:,:,:].astype('uint8')
+            else:
+                n_features = feature.shape[-1] if feature.shape[-1]<layer_max_image else layer_max_image
+                size = feature.shape[1]
+                n_cols = int(np.ceil(n_features/images_per_row))
+                display_grid = np.ones((size * n_cols, images_per_row * size),dtype=np.uint8)*255
+                for col in range(n_cols):
+                    for row in range(images_per_row):
+                        if (col+1)*(row+1)>n_features:
+                            break
+                        channel_image = feature[0, :, :, col * images_per_row + row]
+                        channel_image -= channel_image.mean()
+                        channel_image /= channel_image.std()
+                        channel_image *= 64
+                        channel_image += 128
+                        channel_image = np.clip(channel_image, 0, 255).astype('uint8')
+                        display_grid[col * size : (col + 1) * size, row * size : (row + 1) * size] = channel_image
+                display_grid = np.expand_dims(display_grid, axis=-1)
+            name_dict[name] = f'./feature_map/{count}.png'
+            ImageAug(display_grid).save_image(name_dict[name])
+            tab.add(image_base(name_dict[name], name, 'shape='+str(feature.shape)), name)
+        count += 1
+    return tab.render_notebook() if jupyter else tab.render(path)
+
