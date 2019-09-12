@@ -34,6 +34,18 @@ def image_base(img_src, title, subtitle):
     return image
 
 def layer_visualize(model, image, layer_name, layer_max_image=32, jupyter=True, path='feature_visualize.html'):
+    """network layer visualize.
+    
+    Args:
+        model: a tf.keras model or keras model.
+        image: a image array with shape (1, height, width, channel).
+        layer_name: a list of model layers name.
+        layer_max_image: every layer max plot images.
+        jupyter: if plot in jupyter, default True.
+        path: if jupyter is False, result save a html file.
+    Returns:
+        A pyecharts polt object.
+    """
     if tf.io.gfile.exists('feature_map'):
         tf.io.gfile.rmtree('feature_map')
     tf.io.gfile.makedirs('feature_map')
