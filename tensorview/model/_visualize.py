@@ -3,9 +3,10 @@ from pyecharts.components import Image
 from pyecharts import options as opts
 import tensorflow as tf
 from linora.image import ImageAug
+from cv2 import applyColorMap, COLORMAP_JET, addWeighted
 
 
-__all__ = ['weights_visualize', 'layer_visualize']
+__all__ = ['weights_visualize', 'layer_visualize', 'heatmaps_visualize']
 
 def scatter_base(value, label, title, subtitle):
     c = (Scatter()
@@ -83,3 +84,40 @@ def layer_visualize(model, image, layer_name, layer_max_image=32, jupyter=True, 
         count += 1
     return tab.render_notebook() if jupyter else tab.render(path)
 
+def heatmaps_visualize(model, image, layer_name, jupyter=True, path='heatmaps_visualize.html'):
+    """network layer visualize.
+    
+    Args:
+        model: a tf.keras model or keras model.
+        image: a image array with shape (1, height, width, channel).
+        layer_name: a list of model layers name.
+        jupyter: if plot in jupyter, default True.
+        path: if jupyter is False, result save a html file.
+    Returns:
+        A pyecharts polt object.
+    """
+    if tf.io.gfile.exists('feature_map'):
+        tf.io.gfile.rmtree('feature_map')
+    tf.io.gfile.makedirs('feature_map')
+    temp_model = tf.keras.backend.function(model.inputs, [i.output for i in model.layers if i.name in layer_name])
+    temp_name = [i.name for i in model.layers if i.name in layer_name]
+    result = temp_model(image)
+    images_per_row = 16
+    count = 0
+    name_dict = {}
+    tab = Tab()
+    for feature, name in zip(result, temp_name):
+        if feature.ndim==4:
+            if model.get_layer(name).__class__.__name__=='InputLayer':
+                out = np.squeeze(image, 0).astype('uint8')
+            else:
+                out = tf.image.resize(tf.expand_dims(tf.squeeze(tf.reduce_sum(tf.abs(feature), axis=-1)), axis=-1), (image.shape[1], image.shape[2]))
+                out = 255-tf.cast(out/tf.reduce_max(out)*255., tf.uint8)
+    #             print(np.squeeze(image, 0).shape)
+                out = addWeighted(applyColorMap(out.numpy(), COLORMAP_JET), 0.7, np.squeeze(image, 0).astype('uint8'), 0.3, 0)
+    #             out = np.expand_dims(out, axis=-1)
+            name_dict[name] = f'./feature_map/{count}.png'
+            ImageAug(out).save_image(name_dict[name])
+            tab.add(image_base(name_dict[name], name, 'shape='+str(feature.shape)), name)
+        count += 1
+    return tab.render_notebook() if jupyter else tab.render(path)
