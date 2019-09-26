@@ -7,6 +7,8 @@ Dynamic visualization training service in Jupyter Notebook for Keras, tf.keras a
 ![Github license](https://img.shields.io/github/license/Hourout/tensorview.svg)
 [![PyPI](https://img.shields.io/pypi/v/tensorview.svg)](https://pypi.python.org/pypi/tensorview)
 ![PyPI format](https://img.shields.io/pypi/format/tensorview.svg)
+![contributors](https://img.shields.io/github/contributors/Hourout/tensorview)
+![downloads](https://img.shields.io/pypi/dm/tensorview.svg)
 
 Tensorview is efficient visualization training packages of Keras, enabling the live visualization of loss function and metrics during training process.
 
