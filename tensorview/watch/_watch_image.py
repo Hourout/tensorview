@@ -69,7 +69,7 @@ def image_info(root, path='image_info.html', show_original=False):
             ['jfif_density', info['jfif_density']]
     ]
     table_charts = Table().add(headers, rows)
-    page = Page(layout=pe.charts.Page.SimplePageLayout).add(*[image_charts, table_charts])
+    page = Page(layout=Page.SimplePageLayout).add(*[image_charts, table_charts])
     return page.render(path)
            
            
