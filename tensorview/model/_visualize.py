@@ -85,7 +85,7 @@ def visualize_layer(model, image, layer_name, layer_max_image=32, jupyter=True, 
         count += 1
     return tab.render_notebook() if jupyter else tab.render(path)
 
-def visualize(model, image, layer_name, jupyter=True, path='visualize_heatmaps.html'):
+def visualize_heatmaps(model, image, layer_name, jupyter=True, path='visualize_heatmaps.html'):
     """network layer visualize.
     
     Args:
