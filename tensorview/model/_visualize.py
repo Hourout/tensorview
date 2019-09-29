@@ -1,3 +1,4 @@
+import numpy as np
 from pyecharts.charts import Page, Scatter, Tab
 from pyecharts.components import Image
 from pyecharts import options as opts
@@ -6,7 +7,7 @@ from linora.image import ImageAug
 from cv2 import applyColorMap, COLORMAP_JET, addWeighted
 
 
-__all__ = ['weights_visualize', 'layer_visualize', 'heatmaps_visualize']
+__all__ = ['visualize_weights', 'visualize_layer', 'visualize_heatmaps']
 
 def scatter_base(value, label, title, subtitle):
     c = (Scatter()
@@ -16,7 +17,7 @@ def scatter_base(value, label, title, subtitle):
          .set_global_opts(title_opts=opts.TitleOpts(title=title, subtitle=subtitle)))
     return c
 
-def weights_visualize(model, layer_name):
+def visualize_weights(model, layer_name, path='visualize_weights.html'):
     charts = []
     for name in layer_name:
         for weights in model.weights:
@@ -26,7 +27,7 @@ def weights_visualize(model, layer_name):
                 subtitle = 'shape='+str(model.weights[0].shape)
                 charts.append(scatter_base(weights, label, title, subtitle))
     page = Page().add(*charts)
-    return page.render()
+    return page.render(path)
 
 def image_base(img_src, title, subtitle):
     image = (Image()
@@ -34,7 +35,7 @@ def image_base(img_src, title, subtitle):
              .set_global_opts(title_opts=opts.ComponentTitleOpts(title=title, subtitle=subtitle)))
     return image
 
-def layer_visualize(model, image, layer_name, layer_max_image=32, jupyter=True, path='feature_visualize.html'):
+def visualize_layer(model, image, layer_name, layer_max_image=32, jupyter=True, path='visualize_layer.html'):
     """network layer visualize.
     
     Args:
@@ -84,7 +85,7 @@ def layer_visualize(model, image, layer_name, layer_max_image=32, jupyter=True, 
         count += 1
     return tab.render_notebook() if jupyter else tab.render(path)
 
-def heatmaps_visualize(model, image, layer_name, jupyter=True, path='heatmaps_visualize.html'):
+def visualize(model, image, layer_name, jupyter=True, path='visualize_heatmaps.html'):
     """network layer visualize.
     
     Args:
