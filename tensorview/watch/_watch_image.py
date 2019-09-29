@@ -1,3 +1,4 @@
+import os
 import PIL
 from pyecharts.charts import Page
 from pyecharts.components import Image, Table
