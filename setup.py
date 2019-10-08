@@ -6,9 +6,9 @@ def readme():
         return f.read()
 
 setup(name='tensorview',
-      version='0.4.0',
+      version='0.4.1',
       install_requires=['matplotlib', 'pandas>=0.24.1', 'pyecharts>=1.2.0',
-                        'pyecharts_snapshot>=0.1.10' 'tensorflow>=2.0.0b1',
+                        'pyecharts_snapshot>=0.1.10' 'tensorflow>=2.0.0',
                         'linora>=0.9.3'],
       description='Dynamic visualization training service in Jupyter Notebook for Keras tf.keras and others.',
       long_description=readme(),
