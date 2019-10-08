@@ -2,7 +2,7 @@ from tensorview import train
 from tensorview import model
 from tensorview import watch
 
-__version__ = '0.4.0'
+__version__ = '0.4.1'
 __author__ = 'JinQing Lee'
 
 
