@@ -1,6 +1,6 @@
 from collections import defaultdict
 
-from tensorflow.io.gfile import exists
+import tensorflow as tf
 from tensorflow.keras.callbacks import Callback
 import matplotlib.pyplot as plt
 from IPython.display import clear_output
@@ -141,7 +141,7 @@ class PlotMetricsOnBatch(Callback):
             a html file path.
         """
         if path is not None:
-            assert exists(path), "`path` not exist."
+            assert tf.io.gfile.exists(path), "`path` not exist."
             file = path+'/'+'{}.html'.format(name)
         else:
             file = '{}.html'.format(name)
