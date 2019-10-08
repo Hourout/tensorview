@@ -1,7 +1,6 @@
 from collections import defaultdict
 
-from tensorflow.io.gfile import exists
-from tensorflow.keras.callbacks import Callback
+import tensorflow as tf
 import matplotlib.pyplot as plt
 from IPython.display import clear_output
 from pyecharts.charts import Line
@@ -12,7 +11,7 @@ from pandas import Series
 
 __all__ = ['PlotMetricsOnEpoch']
 
-class PlotMetricsOnEpoch(Callback):
+class PlotMetricsOnEpoch(tf.keras.callbacks.Callback):
     """
     Arguments:
         metrics_name : list, Customized evaluation indicator name list,
@@ -106,7 +105,7 @@ class PlotMetricsOnEpoch(Callback):
             a html file path.
         """
         if path is not None:
-            assert exists(path), "`path` not exist."
+            assert tf.io.gfile.exists(path), "`path` not exist."
             file = path+'/'+'{}.html'.format(name)
         else:
             file = '{}.html'.format(name)
