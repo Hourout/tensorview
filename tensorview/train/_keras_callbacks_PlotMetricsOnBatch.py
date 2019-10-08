@@ -1,7 +1,6 @@
 from collections import defaultdict
 
 import tensorflow as tf
-from tensorflow.keras.callbacks import Callback
 import matplotlib.pyplot as plt
 from IPython.display import clear_output
 from pyecharts.charts import Line
@@ -12,7 +11,7 @@ from pandas import Series
 
 __all__ = ['PlotMetricsOnBatch']
 
-class PlotMetricsOnBatch(Callback):
+class PlotMetricsOnBatch(tf.keras.callbacks.Callback):
     """
     Arguments:
         metrics_name : list, Customized evaluation indicator name list,
