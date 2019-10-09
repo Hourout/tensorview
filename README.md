@@ -7,7 +7,6 @@ Dynamic visualization training service in Jupyter Notebook for Keras, tf.keras a
 ![Github license](https://img.shields.io/github/license/Hourout/tensorview.svg)
 [![PyPI](https://img.shields.io/pypi/v/tensorview.svg)](https://pypi.python.org/pypi/tensorview)
 ![PyPI format](https://img.shields.io/pypi/format/tensorview.svg)
-![contributors](https://img.shields.io/github/contributors/Hourout/tensorview)
 ![downloads](https://img.shields.io/pypi/dm/tensorview.svg)
 
 Tensorview is efficient visualization training packages of Keras, enabling the live visualization of loss function and metrics during training process.
@@ -16,7 +15,7 @@ Tensorview is process in the Jupyter Notebook, so we recommend Jupyter Notebook 
 
 ![](https://github.com/Hourout/beefly/blob/master/image/plot_metrics000.gif)
 
-| [API Document](https://github.com/Hourout/tensorview/blob/master/document/English_API.md) | [API文档](https://github.com/Hourout/tensorview/blob/master/document/Chinese_API.md) | [中文介绍](https://github.com/Hourout/tensorview/blob/master/document/Chinese.md) |
+| [API Document](https://github.com/Hourout/tensorview/blob/master/document/English_API.md) | [中文介绍](https://github.com/Hourout/tensorview/blob/master/document/Chinese.md) |
 
 ## Installation
 
@@ -60,6 +59,12 @@ pip install git+git://github.com/Hourout/tensorview.git
 ## Example
 
 [more example](https://github.com/Hourout/tensorview/blob/master/example/readme.md)
+
+using tensorview
+
+```python
+import tensorview as tv
+```
 
 - [tensorview.train.PlotMetrics()](https://github.com/Hourout/tensorview/blob/master/example/tv.train.plot_metrics.ipynb)
 - [tensorview.train.PlotMetricsOnBatch()](https://github.com/Hourout/tensorview/blob/master/example/PlotMetricsOnBatch.ipynb)
