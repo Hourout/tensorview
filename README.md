@@ -66,6 +66,7 @@ using tensorview
 import tensorview as tv
 ```
 
-- [tensorview.train.PlotMetrics()](https://github.com/Hourout/tensorview/blob/master/example/tv.train.plot_metrics.ipynb)
-- [tensorview.train.PlotMetricsOnBatch()](https://github.com/Hourout/tensorview/blob/master/example/PlotMetricsOnBatch.ipynb)
-- [tensorview.train.PlotMetricsOnEpoch()](https://github.com/Hourout/tensorview/blob/master/example/PlotMetricsOnEpoch.ipynb)
+- [tv.train.PlotMetrics()](https://github.com/Hourout/tensorview/blob/master/example/tv.train.plot_metrics.ipynb)
+- [tv.train.PlotMetricsOnBatch()](https://github.com/Hourout/tensorview/blob/master/example/PlotMetricsOnBatch.ipynb)
+- [tv.train.PlotMetricsOnEpoch()](https://github.com/Hourout/tensorview/blob/master/example/PlotMetricsOnEpoch.ipynb)
+- [tv.model.[..]](https://github.com/Hourout/tensorview/blob/master/example/model.ipynb)
