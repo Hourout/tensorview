@@ -78,3 +78,8 @@ import tensorview as tv
 - [tv.train.PlotMetricsOnBatch()](https://github.com/Hourout/tensorview/blob/master/example/PlotMetricsOnBatch.ipynb)
 - [tv.train.PlotMetricsOnEpoch()](https://github.com/Hourout/tensorview/blob/master/example/PlotMetricsOnEpoch.ipynb)
 - [tv.model.[..]](https://github.com/Hourout/tensorview/blob/master/example/model.ipynb)
+
+## Contact
+Please contact me if you have any related questions or improvements.
+
+[WeChat](https://github.com/Hourout/tensorview/blob/master/image/hourout_wechat.jpg)
