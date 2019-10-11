@@ -40,7 +40,7 @@ def visualize_layer(model, image, layer_name, layer_max_image=32, jupyter=True, 
     
     Args:
         model: a tf.keras model or keras model.
-        image: a image array with shape (1, height, width, channel).
+        image: a image array with shape (1, height, width, channel), height and width are necessary.
         layer_name: a list of model layers name.
         layer_max_image: every layer max plot images.
         jupyter: if plot in jupyter, default True.
@@ -51,6 +51,14 @@ def visualize_layer(model, image, layer_name, layer_max_image=32, jupyter=True, 
     if tf.io.gfile.exists('feature_map'):
         tf.io.gfile.rmtree('feature_map')
     tf.io.gfile.makedirs('feature_map')
+    if np.ndim(image)==2:
+        image = tf.expand_dims(tf.expand_dims(image, 0), -1)
+    elif np.ndim(image)==3:
+        image = tf.expand_dims(image, 0)
+    elif np.ndim(image)==4:
+        pass
+    else:
+        raise ValueError('image shape is error.')
     temp_model = tf.keras.backend.function(model.inputs, [i.output for i in model.layers if i.name in layer_name])
     temp_name = [i.name for i in model.layers if i.name in layer_name]
     result = temp_model(image)
@@ -90,7 +98,7 @@ def visualize_heatmaps(model, image, layer_name, jupyter=True, path='visualize_h
     
     Args:
         model: a tf.keras model or keras model.
-        image: a image array with shape (1, height, width, channel).
+        image: a image array with shape (1, height, width, channel), height and width are necessary.
         layer_name: a list of model layers name.
         jupyter: if plot in jupyter, default True.
         path: if jupyter is False, result save a html file.
@@ -100,6 +108,14 @@ def visualize_heatmaps(model, image, layer_name, jupyter=True, path='visualize_h
     if tf.io.gfile.exists('feature_map'):
         tf.io.gfile.rmtree('feature_map')
     tf.io.gfile.makedirs('feature_map')
+    if np.ndim(image)==2:
+        image = tf.expand_dims(tf.expand_dims(image, 0), -1)
+    elif np.ndim(image)==3:
+        image = tf.expand_dims(image, 0)
+    elif np.ndim(image)==4:
+        pass
+    else:
+        raise ValueError('image shape is error.')
     temp_model = tf.keras.backend.function(model.inputs, [i.output for i in model.layers if i.name in layer_name])
     temp_name = [i.name for i in model.layers if i.name in layer_name]
     result = temp_model(image)
