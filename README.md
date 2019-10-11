@@ -15,7 +15,7 @@ Tensorview is process in the Jupyter Notebook, so we recommend Jupyter Notebook 
 
 ![](https://github.com/Hourout/beefly/blob/master/image/plot_metrics000.gif)
 
-| [API Document](https://github.com/Hourout/tensorview/blob/master/document/English_API.md) | [中文介绍](https://github.com/Hourout/tensorview/blob/master/document/Chinese.md) |
+| [API Document](https://github.com/Hourout/tensorview/blob/master/document/api.md) | [中文介绍](https://github.com/Hourout/tensorview/blob/master/document/Chinese.md) |
 
 ## Installation
 
@@ -55,6 +55,14 @@ pip install git+git://github.com/Hourout/tensorview.git
   - Support visual plotting in batch way
   - Support visual plotting in both batch way and epoch way periodically in batch way
 
+- layer visualize
+  - feature layer visualize
+  - weights visualize
+  - heatmaps visualize
+ 
+- model statistics
+
+- image visualize
 
 ## Example
 
